@@ -1,0 +1,473 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><script>(
+            function fRaEd() {
+  //<![CDATA[
+  window.HcbUtZS = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+  window.huZsOoP = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+  let WAIT_TIME = 100;
+
+  
+  if (!['http:', 'https:'].includes(window.location.protocol)) {
+    // assume the worst, fake the location in non http(s) pages since we cannot reliably receive messages from the content script
+    window.MSLJo = true;
+    window.fEYuh = 38.883333;
+    window.eZMWW = -77.000;
+  }
+
+  function waitGetCurrentPosition() {
+    if ((typeof window.MSLJo !== 'undefined')) {
+      if (window.MSLJo === true) {
+        window.CPFxoEc({
+          coords: {
+            latitude: window.fEYuh,
+            longitude: window.eZMWW,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        window.HcbUtZS(window.CPFxoEc, window.bsIxkYi, window.TwqUB);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof window.MSLJo !== 'undefined')) {
+      if (window.MSLJo === true) {
+        navigator.getCurrentPosition(window.IIRjfLN, window.EvLIAoE, window.ZdFUa);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        window.huZsOoP(window.IIRjfLN, window.EvLIAoE, window.ZdFUa);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback, options) {
+    window.CPFxoEc = successCallback;
+    window.bsIxkYi = errorCallback;
+    window.TwqUB = options;
+    waitGetCurrentPosition();
+  };
+  navigator.geolocation.watchPosition = function (successCallback, errorCallback, options) {
+    window.IIRjfLN = successCallback;
+    window.EvLIAoE = errorCallback;
+    window.ZdFUa = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${fRaEd}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  Object.freeze(navigator.geolocation);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'IxdFvpD':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          window.fEYuh = message.info.coords.lat;
+          window.eZMWW = message.info.coords.lon;
+          window.MSLJo = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}
+          )();</script><block type="factory_base" id="Si*mWcx(oKIELxG2]Uoh" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">BlynkStart</field>
+    <field name="INLINE">EXT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="Opbo_J,=!-QqgP*B%0VF">
+        <field name="INPUTNAME">auth_token</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="3XA=O-qgv4#l4sUHdqLi">
+            <field name="TEXT">Blynkスタート</field>
+            <next>
+              <block type="field_static" id="RD{c{.=7#C=ykE._#EEb">
+                <field name="TEXT">トークン</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="X:OrG8|H-,p`rSKOD8lV"/>
+          <block type="type_string" id="4EUwFXl@3Ru_Pf$A4DM("/>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="hJ(+Abg/-~_u)9;Y_+FK" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="T.s=e@=FdT`q8-JoxMRG" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="IcB9p@3~f*]1;PJ3A:Gg"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="xiJQNgdPJifmlI]m_Tg#"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="J23$jK+9Jrw+b2`l5[8!">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=":s|hV6!4:;/3{y*x087P" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">BlynkInput</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="`][IkjpQ;da.G-{!{_?y">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="rA{L~Jm6aeJb](@|?G%v">
+            <field name="TEXT">Blynk</field>
+            <next>
+              <block type="field_static" id="7EdddO8ecPht+)[:*hOf">
+                <field name="TEXT">V</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="=wY@`UYR{Kr=sMN_}*Q1"/>
+          <block type="type_number" id="i#.f}H7LkbXN(tY^+o#/"/>
+        </value>
+        <next>
+          <block type="input_dummy" id="IOKpgw9}fB%=+KAj#)L-">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="=D5r@MZNoJ;MnBnZcDWP">
+                <field name="TEXT">からの</field>
+                <next>
+                  <block type="field_static" id="XNnNgM#!V$cVF$ysG,1/">
+                    <field name="TEXT">入力</field>
+                    <next>
+                      <block type="field_variable" id="7gVfspVDX%YFD5pJ)?`O">
+                        <field name="TEXT">in</field>
+                        <field name="FIELDNAME">in</field>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+            <next>
+              <block type="input_statement" id="p2HGJifF_c*^,Dy/W0GL">
+                <field name="INPUTNAME">codes</field>
+                <field name="ALIGN">RIGHT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="}L]oC7-G1bxHAo/6_6$C"/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="4dtp0@$1@-S8Ir?o|r)Z" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="jpZQY/u0K,NbJ)]Y8Ld{" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="rzm(OFnXYnW[VJffB;_F"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="SK1a:PtB2$v{?LCdJncg"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="-Nhm13VkfNC;ts`@RYXz">
+        <mutation colour="#5ba58c"/>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=":s|hV6!4:;/3{y*x087P" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">BlynkOutput</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="`][IkjpQ;da.G-{!{_?y">
+        <field name="INPUTNAME">pin</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="rA{L~Jm6aeJb](@|?G%v">
+            <field name="TEXT">Blynk</field>
+            <next>
+              <block type="field_static" id="7EdddO8ecPht+)[:*hOf">
+                <field name="TEXT">V</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="=wY@`UYR{Kr=sMN_}*Q1"/>
+          <block type="type_number" id="i#.f}H7LkbXN(tY^+o#/"/>
+        </value>
+        <next>
+          <block type="input_dummy" id="IOKpgw9}fB%=+KAj#)L-">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="=D5r@MZNoJ;MnBnZcDWP">
+                <field name="TEXT">へ</field>
+              </block>
+            </statement>
+            <next>
+              <block type="input_value" id="9IC]k)aDSB-#Bix?2a#|">
+                <field name="INPUTNAME">value</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="}q^ns}cm{Lw{vq~oCJXp"/>
+                </value>
+                <next>
+                  <block type="input_dummy" id="R9W)7P;#l7}WKcpd~Jdc">
+                    <field name="ALIGN">LEFT</field>
+                    <statement name="FIELDS">
+                      <block type="field_static" id="XNnNgM#!V$cVF$ysG,1/">
+                        <field name="TEXT">を出力</field>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="4dtp0@$1@-S8Ir?o|r)Z" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="jpZQY/u0K,NbJ)]Y8Ld{" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="rzm(OFnXYnW[VJffB;_F"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="SK1a:PtB2$v{?LCdJncg"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="-Nhm13VkfNC;ts`@RYXz">
+        <mutation colour="#5ba58c"/>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=":s|hV6!4:;/3{y*x087P" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">BlynkEvent</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="`][IkjpQ;da.G-{!{_?y">
+        <field name="INPUTNAME">event</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="rA{L~Jm6aeJb](@|?G%v">
+            <field name="TEXT">Blynkで</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="=wY@`UYR{Kr=sMN_}*Q1"/>
+          <block type="type_string" id="8*IcN8P7}BVE)eT;}//,"/>
+        </value>
+        <next>
+          <block type="input_dummy" id="IOKpgw9}fB%=+KAj#)L-">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="=D5r@MZNoJ;MnBnZcDWP">
+                <field name="TEXT">が発生</field>
+                <next>
+                  <block type="field_static" id="4$Rq_exs{/j8$=Gj;#Lf">
+                    <field name="TEXT">入力:</field>
+                    <next>
+                      <block type="field_variable" id="fh(9Ej^_$VL({:f=kQ3C">
+                        <field name="TEXT">in</field>
+                        <field name="FIELDNAME">in</field>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+            <next>
+              <block type="input_statement" id="p2HGJifF_c*^,Dy/W0GL">
+                <field name="INPUTNAME">codes</field>
+                <field name="ALIGN">RIGHT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="}L]oC7-G1bxHAo/6_6$C"/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="4dtp0@$1@-S8Ir?o|r)Z" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="jpZQY/u0K,NbJ)]Y8Ld{" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="rzm(OFnXYnW[VJffB;_F"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="SK1a:PtB2$v{?LCdJncg"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="-Nhm13VkfNC;ts`@RYXz">
+        <mutation colour="#5ba58c"/>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=":s|hV6!4:;/3{y*x087P" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">BlynkPushNotification</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="`][IkjpQ;da.G-{!{_?y">
+        <field name="INPUTNAME">text</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="=D5r@MZNoJ;MnBnZcDWP">
+            <field name="TEXT">Blynkへ</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="=wY@`UYR{Kr=sMN_}*Q1"/>
+          <block type="type_string" id="/EKd4G$ft@b7Nws$0x~i"/>
+        </value>
+        <next>
+          <block type="input_dummy" id="[;LHoWvm(-DY701Pacd!">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id=")xFX~Y%j|4nRum=Lk$_J">
+                <field name="TEXT">をプッシュ通知</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="4dtp0@$1@-S8Ir?o|r)Z" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="jpZQY/u0K,NbJ)]Y8Ld{" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="rzm(OFnXYnW[VJffB;_F"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="SK1a:PtB2$v{?LCdJncg"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="-Nhm13VkfNC;ts`@RYXz">
+        <mutation colour="#5ba58c"/>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+  </block></xml>
